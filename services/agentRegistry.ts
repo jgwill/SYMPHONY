@@ -69,17 +69,18 @@ export const MOCK_AGENT_REGISTRY: AgentDefinition[] = [
     id: 'visuals.tool.v1',
     name: '🎨 Visuals',
     glyph: '🎨',
-    description: 'Generates artistic images, visual diagrams (as images), and Mermaid syntax for diagrams.',
+    description: 'A sophisticated visual interpreter. Creates artistic images, technical diagrams, and can visualize abstract structural concepts like "advancing patterns".',
     capabilities: [
         'artistic_image_generation',
-        'visual_diagram_image_generation',
-        'mermaid_syntax_generation',
+        'diagram_generation',
+        'structural_dynamics_visualization',
+        'speclang_conceptual_rendering'
     ],
     mainViewComponent: VisualsAgentView, 
     ui: {
         iconGlyph: '🎨',
     },
-    defaultPrompt: "Visuals agent ready. Describe the image or diagram you'd like to create."
+    defaultPrompt: "Visuals agent ready. Describe the image or diagram you'd like to create, or use a prompt starter."
   },
   {
     id: 'orpheus.renderer.v1',
