@@ -75,6 +75,8 @@ const MiaAgentView: React.FC = () => {
   const [exportContent, setExportContent] = useState<{ llm: string; agent: string; human: string } | null>(null);
   const [nyroFeedback, setNyroFeedback] = useState<{ type: string; content: string } | null>(null);
   const [isProcessingWithNyro, setIsProcessingWithNyro] = useState<false | 'validation' | 'refinement'>(false);
+  const [isAutoValidating, setIsAutoValidating] = useState(false);
+  const [lastValidatedSpec, setLastValidatedSpec] = useState<string | null>(null);
 
 
   const handleGenerateSpecDoc = useCallback(async () => {
@@ -201,15 +203,22 @@ Now, create the full SpecLang document.`;
     }
   };
 
-  const handleNyroProcessing = useCallback(async (type: 'validation' | 'refinement') => {
+ const handleNyroProcessing = useCallback(async (type: 'validation' | 'refinement', isAuto: boolean = false) => {
     if (!context || !context.agentMemory.sharedContext.specLangDocument) {
-      context.setAppError("No SpecLang document to process.");
+      if (!isAuto) context.setAppError("No SpecLang document to process.");
       return;
     }
-    setIsProcessingWithNyro(type);
-    context.setIsLoading(true);
+
+    if (isAuto) {
+      setIsAutoValidating(true);
+    } else {
+      setIsProcessingWithNyro(type);
+      context.setIsLoading(true);
+    }
+    
     setNyroFeedback(null);
-    context.setAppError(null);
+    if (!isAuto) context.setAppError(null);
+
     try {
       const specDoc = context.agentMemory.sharedContext.specLangDocument;
       let result = '';
@@ -222,29 +231,45 @@ Now, create the full SpecLang document.`;
       }
     } catch (error) {
       const errorMessage = (error as Error).message;
-      context.setAppError(errorMessage);
+      if (!isAuto) context.setAppError(errorMessage);
       setNyroFeedback({ type: 'Error', content: errorMessage });
     } finally {
-      context.setIsLoading(false);
-      setIsProcessingWithNyro(false);
+      if (isAuto) {
+        setIsAutoValidating(false);
+      } else {
+        context.setIsLoading(false);
+        setIsProcessingWithNyro(false);
+      }
     }
   }, [context]);
+
+  const { specLangDocument, currentPlan, initialConceptualizationText } = context?.agentMemory.sharedContext || {};
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (specLangDocument && specLangDocument.trim() && specLangDocument !== lastValidatedSpec && !isProcessingWithNyro && !isAutoValidating) {
+        handleNyroProcessing('validation', true);
+        setLastValidatedSpec(specLangDocument);
+      }
+    }, 1500);
+
+    return () => clearTimeout(handler);
+  }, [specLangDocument, lastValidatedSpec, isProcessingWithNyro, isAutoValidating, handleNyroProcessing]);
 
 
   useEffect(() => {
     if (context?.activeAgentId === 'mia.architect.v1' && 
-        context.agentMemory.sharedContext.initialConceptualizationText && 
-        !context.agentMemory.sharedContext.specLangDocument &&
-        !context.isLoading && !isGeneratingSpec) { // Ensure not already generating
+        initialConceptualizationText && 
+        !specLangDocument &&
+        !context.isLoading && !isGeneratingSpec) { 
       handleGenerateSpecDoc();
     }
-  }, [context?.activeAgentId, context?.agentMemory.sharedContext.initialConceptualizationText, context?.agentMemory.sharedContext.specLangDocument, context?.isLoading, isGeneratingSpec, handleGenerateSpecDoc]);
+  }, [context?.activeAgentId, initialConceptualizationText, specLangDocument, context?.isLoading, isGeneratingSpec, handleGenerateSpecDoc]);
 
 
   if (!context) return <div className="p-4 text-slate-500">Mia Agent context not available.</div>;
 
-  const { agentMemory, isLoading, appError } = context; 
-  const { specLangDocument, currentPlan, initialConceptualizationText } = agentMemory.sharedContext;
+  const { isLoading, appError } = context; 
 
   return (
     <div className="p-4 sm:p-6 h-full flex flex-col bg-slate-850 text-slate-200 overflow-hidden">
@@ -291,7 +316,7 @@ Now, create the full SpecLang document.`;
             <button onClick={handleAnalyzeContext} disabled={isLoading} className="flex items-center justify-center gap-1.5 w-full px-2 py-1.5 bg-green-700 hover:bg-green-600 text-white font-semibold rounded-md shadow transition-colors text-xs disabled:opacity-60">
                 {isAnalyzing ? <><ArrowPathIcon className="w-3.5 h-3.5 animate-spin"/> Analyzing...</> : "Analyze Context & Extract Spec"}
             </button>
-            <button onClick={handleRefineSpec} disabled={isLoading || !specLangDocument} className="flex items-center justify-center gap-1.5 w-full px-2 py-1.5 bg-green-700 hover:bg-green-600 text-white font-semibold rounded-md shadow transition-colors text-xs disabled:opacity-60">
+            <button onClick={() => handleRefineSpec()} disabled={isLoading || !specLangDocument} className="flex items-center justify-center gap-1.5 w-full px-2 py-1.5 bg-green-700 hover:bg-green-600 text-white font-semibold rounded-md shadow transition-colors text-xs disabled:opacity-60">
                 {isRefining ? <><ArrowPathIcon className="w-3.5 h-3.5 animate-spin"/> Refining...</> : "Refine Spec with BDD"}
             </button>
             <button onClick={handleOpenExportModal} disabled={isLoading || !specLangDocument} className="flex items-center justify-center gap-1.5 w-full px-2 py-1.5 bg-green-700 hover:bg-green-600 text-white font-semibold rounded-md shadow transition-colors text-xs disabled:opacity-60">
@@ -306,6 +331,7 @@ Now, create the full SpecLang document.`;
             <div className="text-sm sm:text-base font-medium text-slate-300 bg-slate-750 p-2 flex items-center justify-between flex-shrink-0">
                 <div className="flex items-center">
                     <AcademicCapIcon className="w-4 h-4 mr-2 text-sky-400"/> SpecLang Document
+                    {isAutoValidating && <span className="text-xs text-slate-400 animate-pulse ml-2">(Nyro is analyzing...)</span>}
                 </div>
                 <div className="flex items-center gap-1.5">
                     <button 

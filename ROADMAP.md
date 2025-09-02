@@ -60,7 +60,7 @@ This document outlines the planned development phases and features for the **SYM
     *   [*] **SpecLang Editor with Creative Validation:**
         *   [x] `MiaAgentView` provides an editor for SpecLang.
         *   [x] Integrated on-demand validation feedback via Mia -> Nyro agent handoff.
-        *   [ ] Implement real-time intent refinement and suggestions.
+        *   [x] Implement real-time, automated SpecLang validation.
     *   [*] **Agent Persona Interfaces:**
         *   [x] Dedicated views for all 8 agents are implemented and functional.
         *   [*] Enhance interfaces to better reflect agent-specific character archetypes.
