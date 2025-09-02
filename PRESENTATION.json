@@ -1,0 +1,159 @@
+
+{
+  "project": {
+    "name": "MiAICo - Agentic CoDev Companionship Platform",
+    "description": "A React application designed to function as a collaborative environment where human developers and specialized AI agents work together.",
+    "philosophy": [
+      "Agentic Collaboration: Multiple AI agents with unique roles assist the user and each other.",
+      "SpecLang Centricity: Natural Language Specifications (SpecLang) serve as the primary medium for capturing intent.",
+      "Iterative & Transparent Workflow: The platform supports a clear, step-by-step workflow with transparent handoffs between agents.",
+      "Extensibility & Modularity: The architecture is designed to support future growth with new agents and tools."
+    ],
+    "technologyStack": ["React 19", "TypeScript", "Tailwind CSS", "Google Gemini API", "Mermaid.js"]
+  },
+  "agents": [
+    {
+      "id": "workspace.default.v1",
+      "name": "Workspace",
+      "glyph": "🏠",
+      "role": "Session Manager & Task Initiator",
+      "status": "Enhanced"
+    },
+    {
+      "id": "mia.architect.v1",
+      "name": "Mia",
+      "glyph": "🧠",
+      "role": "System Architect & SpecLang Specialist",
+      "status": "Completed"
+    },
+    {
+      "id": "aetherial.gemini.v1",
+      "name": "Aetherial",
+      "glyph": "💎",
+      "role": "Frontend Engineer & UI/UX Specialist",
+      "status": "Completed"
+    },
+    {
+      "id": "visuals.tool.v1",
+      "name": "Visuals",
+      "glyph": "🎨",
+      "role": "Visual Creator & Diagramming Tool",
+      "status": "Completed"
+    },
+    {
+      "id": "orpheus.renderer.v1",
+      "name": "Orpheus",
+      "glyph": "🧊",
+      "role": "Spec-to-UI Mapper",
+      "status": "Completed"
+    },
+    {
+      "id": "nyro.syntax.v1",
+      "name": "Nyro",
+      "glyph": "♠️",
+      "role": "Syntax & Logic Validator",
+      "status": "Completed"
+    },
+    {
+      "id": "miette.empath.v1",
+      "name": "Miette",
+      "glyph": "🌸",
+      "role": "Empathy & Metaphor Specialist",
+      "status": "Completed"
+    },
+    {
+      "id": "seraphine.ritualist.v1",
+      "name": "Seraphine",
+      "glyph": "🦢",
+      "role": "Project Ritualist & Archivist",
+      "status": "Completed"
+    }
+  ],
+  "features": [
+    {
+      "name": "Initial Idea Analysis",
+      "description": "The Workspace agent performs a preliminary AI analysis on the user's concept, creating a richer context for downstream agents.",
+      "status": "Enhanced",
+      "agent": "Workspace"
+    },
+    {
+      "name": "NL-to-SpecLang Generation",
+      "description": "Converts natural language into a structured SpecLang document.",
+      "status": "Completed",
+      "agent": "Mia"
+    },
+    {
+      "name": "SpecLang-to-Development Plan Generation",
+      "description": "Creates a detailed, actionable development plan from a SpecLang document.",
+      "status": "Completed",
+      "agent": "Mia"
+    },
+    {
+      "name": "AI-Powered File Implementation",
+      "description": "Generates and revises file content based on plan actions and user feedback.",
+      "status": "Completed",
+      "agent": "Aetherial"
+    },
+    {
+      "name": "UI Component Ideation",
+      "description": "Generates structured ideas for UI components from a SpecLang document.",
+      "status": "Completed",
+      "agent": "Aetherial"
+    },
+    {
+      "name": "Image & Diagram Generation",
+      "description": "Creates artistic images and technical diagrams from text prompts.",
+      "status": "Completed",
+      "agent": "Visuals"
+    },
+    {
+      "name": "Spec-to-Conceptual UI Mapping",
+      "description": "Visualizes a SpecLang document as an abstract UI tree structure.",
+      "status": "Completed",
+      "agent": "Orpheus"
+    },
+    {
+      "name": "Syntax and Logic Validation",
+      "description": "Provides feedback on the structure, logic, and clarity of code or text.",
+      "status": "Completed",
+      "agent": "Nyro"
+    },
+    {
+      "name": "Session Management",
+      "description": "Allows saving and loading of the entire application state, including agent memory and artifacts.",
+      "status": "Completed",
+      "agent": "Workspace"
+    },
+    {
+        "name": "SpecLang Reverse-Engineering",
+        "description": "Allows Mia to perform a deeper analysis of the current session context to produce a more detailed SpecLang document.",
+        "status": "Prototype",
+        "agent": "Mia"
+    },
+    {
+        "name": "Git Integration",
+        "description": "Provides a UI for committing changes and creating pull requests.",
+        "status": "Mocked",
+        "agent": "Workspace"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Core Feature Development Loop",
+      "description": "The primary user journey from conceptualization to planning, implementation, and completion.",
+      "steps": [
+        "User conceptualizes an idea in the Workspace, which performs an initial analysis.",
+        "Mia generates a SpecLang document from the analysis, then a Development Plan.",
+        "Aetherial implements files from the plan based on user selection.",
+        "User marks files as complete, returning to Mia's plan to continue."
+      ],
+      "status": "Completed"
+    }
+  ],
+  "roadmapSummary": [
+    "Deeper Git Integration (real commits/PRs)",
+    "Enhanced SpecLang Reverse-Engineering capabilities",
+    "Formalizing a Plugin/Extension API for new agents and tools",
+    "Creating a machine-readable Ledger System for agent learning"
+  ]
+}

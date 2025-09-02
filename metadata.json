@@ -1,0 +1,6 @@
+{
+  "name": "MiAICoDevOpsAgentic250528Fork1b250707",
+  "description": "A React application that uses Gemini API to assist in conceptualizing, planning, and implementing software development tasks within a repository context. Drastic changes planned with recent RISE framework (even if biased by Problem solving)",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
