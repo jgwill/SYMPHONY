@@ -18,6 +18,7 @@ This document outlines the planned development phases and features for the **SYM
     *   [*] **Agent Registry & Orchestration:**
         *   [x] Implemented `AgentSelectionPanel` for multi-agent collaboration.
         *   [x] Core state management for agents in `App.tsx` and `AppContext`.
+        *   [x] Implemented first multi-agent workflow ("Spec-to-UI Concept").
         *   [ ] Enhance orchestration to support more complex, multi-agent workflows.
     *   [*] **SpecLang Parser & Generator:**
         *   [x] Core NL-to-SpecLang functionality implemented in `geminiService`.
@@ -39,10 +40,10 @@ This document outlines the planned development phases and features for the **SYM
     *   [*] **GitHub Integration Service:**
         *   [x] Implemented live read-only file tree fetching.
         *   [x] Commit/PR functionalities are currently mocked.
-        *   [ ] Implement real branch creation and commit capabilities.
+        *   [*] Implement real branch creation and commit capabilities.
     *   [*] **Creative Validation Engine:**
         *   [x] Nyro agent provides conceptual validation for syntax and logic.
-        *   [ ] Enhance with more sophisticated quality assurance for advancing patterns.
+        *   [*] Enhance with more sophisticated quality assurance for advancing patterns.
     *   [ ] **Knowledge Graph Service:**
         *   [ ] Implement semantic relationship mapping for deeper context understanding.
 
