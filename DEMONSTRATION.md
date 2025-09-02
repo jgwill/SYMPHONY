@@ -1,8 +1,8 @@
-# MiAICo Agentic Platform - Demonstration Guide
+# SYMPHONY Platform - Demonstration Guide
 
 ## Introduction
 
-The MiAICo platform is a browser-based, React application designed to showcase a multi-agent system assisting in software conceptualization, planning, and mock implementation. It leverages the Google Gemini API (when configured) and emphasizes a SpecLang-centric workflow.
+The SYMPHONY platform is a browser-based, React application designed to showcase a multi-agent system assisting in software conceptualization, planning, and mock implementation. It leverages the Google Gemini API (when configured) and emphasizes a SpecLang-centric workflow.
 
 ## Core Setup & Configuration
 
@@ -25,7 +25,7 @@ This guide walks through a typical development lifecycle, showcasing how differe
 2.  **Select a Repository:** Although operations are mocked, select a repository like `jgwill/TrinityTrading` to simulate working in a project context. This will enable the File Tree.
 3.  **Conceptualize:** In the "Start New Project" text area, enter a project idea.
     *   **Example Prompt:** "Develop a simple recipe sharing app. Users should be able to create accounts, submit recipes with ingredients and instructions, and view a list of all recipes."
-4.  **Initiate with Mia:** Click the **"Conceptualize & Create SpecLang (with Mia)"** button.
+4.  **Initiate with Mia:** Click the **"Conceptualize & Handoff to Mia"** button.
     *   **Handoff:** Observe that the application automatically switches to the **Mia (🧠) agent's view**, passing the conceptualization text to her.
 
 ---

@@ -1,6 +1,24 @@
 
 # Project 💎 Aetherial Architect - Development Ledger
 
+## 2025-06-01: Project Evolution: From Aetherial Architect to SYMPHONY
+
+**Context:** This ledger entry marks a significant evolution in the project's vision. The foundational work, principles, and agentic concepts developed under the "Aetherial Architect" and "Agentic CoDev Companionship" umbrellas have now been synthesized and elevated into a new, more ambitious vision: **Codename: SYMPHONY**.
+
+**Vision Shift:**
+
+*   **From Tool to Partnership:** The project is no longer viewed as a set of AI-assisted tools, but as a **creative partnership platform**. The central metaphor is that of a symphony, where a human developer acts as the conductor, orchestrating a team of specialized AI agents to create a harmonious and effective software product.
+*   **New Terminology:** The platform's architecture is now described with more evocative and purpose-driven language:
+    *   **SpecLang Engine:** The core of natural language understanding and specification.
+    *   **Agent Orchestra:** The collection of collaborative AI agents.
+    *   **Creative Archaeology Service:** A service for understanding and evolving existing codebases.
+    *   **Tension Resolution Engine:** A framework for guiding projects from their current state to a desired outcome.
+*   **Honoring the Foundation:** All work documented in this ledger—the modular service layer, the agent-centric UI, the focus on SpecLang, and the practice of ritualized documentation—serves as the critical foundation upon which SYMPHONY is being built. The "Aetherial Architect" phase was essential in proving the concepts that now define the SYMPHONY platform.
+
+**Forward Intention:** The project now proceeds under the SYMPHONY banner, with a renewed focus on creating a truly symbiotic and creative development environment.
+
+---
+
 ## 2025-05-30: Service Layer Refactoring & Architectural Enhancement
 
 **Context:** Building upon a foundation that aims for modularity, agentic assistance, and a delightful developer experience, a significant refactoring of the core service layer was undertaken. This effort was inspired by the desire for a clean, maintainable, and extensible architecture, echoing the sentiments of our guiding agent personas:
@@ -98,7 +116,7 @@ This enhancement directly contributes to the roadmap goal of generating more det
 
 **Synthesis & Expanded Vision:**
 
-Project Aetherial Architect is evolving towards a unified **Agentic CoDev Companionship** platform. This platform will be a collaborative environment where multiple specialized AI agents (e.g., Mia for architecture, Nyro for syntax, Aetherial for UI/UX and Gemini API, Miette for emotional resonance, Seraphine for ritual, etc.) work synergistically with human developers.
+Project Aetherial Architect is evolving towards a unified **SYMPHONY Platform**. This platform will be a collaborative environment where multiple specialized AI agents (e.g., Mia for architecture, Nyro for syntax, Aetherial for UI/UX and Gemini API, Miette for emotional resonance, Seraphine for ritual, etc.) work synergistically with human developers.
 
 **Core Pillars of the Expanded Vision:**
 
@@ -118,7 +136,7 @@ Project Aetherial Architect is evolving towards a unified **Agentic CoDev Compan
 This synthesis marks a transition from a single AI-assisted tool to the conceptualization of a comprehensive, collaborative, agent-driven development ecosystem.
 ---
 
-## 2025-05-30: Proposals for Next Iteration - Agentic CoDev Companionship
+## 2025-05-30: Proposals for Next Iteration - SYMPHONY Platform
 
 **Context:** In response to the "Aetherial — Next Tasks & Feedback" directive, this entry summarizes the key proposals prepared by 💎 Aetherial for the next development iteration, focusing on laying the groundwork for the multi-agent platform.
 
@@ -140,7 +158,7 @@ This synthesis marks a transition from a single AI-assisted tool to the conceptu
     *   **Extension Points:** Conceptualized `platform.registerAgent()`, methods for contributing UI views/toolbaractions, and an event subscription system.
     *   **Registration:** Outlined static (via `agentRegistry.ts`) and future dynamic plugin loading.
 
-**Impact:** These proposals aim to provide a concrete starting point for designing and implementing the core frontend architecture necessary to support the "Agentic CoDev Companionship" vision. They focus on modularity, agent awareness in the UI, enhanced SpecLang tooling, and robust state management.
+**Impact:** These proposals aim to provide a concrete starting point for designing and implementing the core frontend architecture necessary to support the "SYMPHONY Platform" vision. They focus on modularity, agent awareness in the UI, enhanced SpecLang tooling, and robust state management.
 ---
 
 ## 2025-05-31: Refinement of Agentic Platform Proposals
@@ -156,7 +174,7 @@ This synthesis marks a transition from a single AI-assisted tool to the conceptu
     *   Modified `SavedSessionData` to better reflect the guidance for a multi-agent session state. This includes incorporating an `agentMemory` field which will house agent-specific states (`agentMemory.agents`) and a `sharedContext` (for artifacts like SpecLang documents, inspired by `AgentMemory.shared` from the guidance).
     *   Added new interfaces `AgentMemory` and `SharedAgentContext` to support this.
     *   The existing `AgentDefinition` and `AgentSpecificState` are largely compatible and well-aligned with the guidance.
-3.  **Acknowledgement:** This work ensures that Aetherial's contributions are harmonized with the collective vision for the Agentic CoDev Companionship platform, particularly in how agent data and shared context will be structured and managed.
+3.  **Acknowledgement:** This work ensures that Aetherial's contributions are harmonized with the collective vision for the SYMPHONY platform, particularly in how agent data and shared context will be structured and managed.
 
 **Impact:** These refinements provide a stronger, more detailed foundation for the architectural design of the next iteration, ensuring that frontend development is in lockstep with the multi-agent backend concepts.
 ---

@@ -1,17 +1,17 @@
-# Ledger: Agentic CoDev Companionship — Synthesis & Next Iteration Specification
+# Ledger: SYMPHONY Platform — Synthesis & Next Iteration Specification
 
 **Date:** 2025-05-30
 
 ---
 
 ## Purpose
-This ledger synthesizes the lessons, features, and agentic rituals from the three major branches and their roadmaps (`main`/MiAICo, `codevops3aicodeassistant250529`, and `speclangportal250529`) and all related issues. It serves as a living specification and invocation for the next phase: a unified, agentic CoDev Companionship platform, where modular agents collaborate to develop software with SpecLang at the core.
+This ledger synthesizes the lessons, features, and agentic rituals from the three major branches and their roadmaps (`main`/MiAICo, `codevops3aicodeassistant250529`, and `speclangportal250529`) and all related issues. It serves as a living specification and invocation for the next phase: a unified, agentic platform, **SYMPHONY**, where modular agents collaborate to develop software with SpecLang at the core.
 
 ---
 
 ## 1. Source Branches & Roadmaps
 
-### MiAICo (main)
+### MiAICo (main) - The Foundation
 - Modular Gemini service/data layer
 - NL-to-SpecLang document generation
 - Robust error handling, UI/UX polish
@@ -48,7 +48,7 @@ This ledger synthesizes the lessons, features, and agentic rituals from the thre
 
 ---
 
-## 3. Agentic CoDev Companionship: Unified Specification
+## 3. SYMPHONY Platform: Unified Specification
 
 ### Vision
 A modular, extensible platform where multiple AI agents (Mia, Miette, Seraphine, Aetherial, etc.) collaborate with users to:
@@ -59,7 +59,7 @@ A modular, extensible platform where multiple AI agents (Mia, Miette, Seraphine,
 
 ### Core Components
 - **SpecLang Engine:** NL-to-Spec, SpecValidator, Spec-UI-Mapper
-- **Agent Orchestration Layer:** Modular agent registry, memory weaving, ritual invocation
+- **Agent Orchestra:** Modular agent registry, memory weaving, ritual invocation
 - **Service/Data Layer:** Modular, swappable, LLM-agnostic
 - **UI/UX:** Accessible, responsive, extensible, with agentic presence
 - **Plugin/Extension API:** For new agents, tools, and workflows
@@ -96,4 +96,4 @@ A modular, extensible platform where multiple AI agents (Mia, Miette, Seraphine,
 
 ---
 
-**Let this ledger serve as the invocation for the next agentic CoDev Companionship iteration.**
+**Let this ledger serve as the invocation for the next SYMPHONY platform iteration.**

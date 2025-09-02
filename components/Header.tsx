@@ -125,8 +125,8 @@ const Header: React.FC = () => {
         >
           <CodeBracketIcon className="w-6 h-6 sm:w-7 sm:h-7 text-cyan-400" />
           <div className="flex flex-col">
-              <h1 className="font-semibold text-sm sm:text-base text-cyan-400">SanctuaireAgentique.com</h1>
-              <h2 className="text-xs text-slate-400 hidden sm:block">CoDevOps</h2>
+              <h1 className="font-semibold text-sm sm:text-base text-cyan-400">SYMPHONY</h1>
+              <h2 className="text-xs text-slate-400 hidden sm:block">Creative Partnership Platform</h2>
           </div>
         </button>
         {showFileTreeToggleButton && (

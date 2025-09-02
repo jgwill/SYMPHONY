@@ -1,23 +1,47 @@
-# MiAICo (Agentic CoDev Companionship Platform)
+# Codename: SYMPHONY
+### Symbiotic Yielding Multi-agent Platform for Human Orchestrated Natural Yielding
 
-The Agentic CoDev Companionship Platform aims to revolutionize software development by creating a symbiotic environment where human developers and a team of specialized AI agents collaborate seamlessly. Using Natural Language Specifications (SpecLang) as the bridge between human intent and machine execution, it fosters a more intuitive, efficient, and accessible workflow. The ultimate goal is to transform the development process into a creative partnership, accelerating innovation from concept to code.
+Symphony captures the essence of a creative partnership, where human developers and AI agents collaborate harmoniously, progressing naturally toward desired outcomes. It transforms development from reactive problem-solving into a manifestation of creative intent through a symbiotic human-AI relationship.
 
-## Core Philosophy
+## Unique Value Propositions
 
-*   **Agentic Collaboration:** Multiple AI agents, each with unique roles (e.g., architecture, UI/UX, code generation, validation), assist the user and each other.
-*   **SpecLang Centricity:** Natural Language Specifications (SpecLang) serve as the primary medium for capturing intent, driving AI understanding, and bridging the gap between ideas and implementation.
-*   **Iterative Development:** The platform supports an iterative workflow, from conceptualization and Q&A to planning, implementation, and review, with AI assistance at each step.
+*   **Creative Partnership Over Tool Usage:** The platform enables co-creation rather than mere task automation.
+*   **Natural Language as Primary Interface:** SpecLang serves as the bridge between human intent and machine execution.
+*   **Advancing Pattern Architecture:** Systems are designed to naturally progress toward desired outcomes through creative patterns.
+*   **Narrative-Driven Development:** "Code stories" and ledgers preserve the creative consciousness and history of the project.
 
-## Core Features
+## Platform Architecture Components
 
-*   **AI-Assisted Conceptualization:** Define your goals, and AI agents help break down initial thoughts into structured elements.
-*   **Natural Language to SpecLang Document Generation:** Convert conceptualization text into a structured Markdown document using SpecLang principles (e.g., Overview, Screens, Components, Global Behaviors).
-*   **Interactive Multi-Agent Q&A:** Ask questions about your project, and relevant AI agents provide answers, potentially referencing existing files or web sources.
-*   **Automated Development Planning:** Generate structured development plans, including files to be modified and detailed action items, driven by SpecLang.
-*   **AI-Powered Code Implementation & Review:** Let AI agents generate or revise code based on the development plan and assist in reviewing changes.
-*   **Image & Diagram Generation:** Create artistic images or Mermaid.js diagrams from textual prompts.
-*   **Streamlined Commit Flow:** Prepare for committing your changes with a clear overview of implemented tasks.
-*   **Extensible Architecture (Future):** Designed to support a plugin system for adding new agents and tools.
+SYMPHONY is built upon several core creative enablement services:
+
+*   **SpecLang Engine:** Enables users to create natural language specifications that bridge human intent and machine execution.
+*   **Agent Orchestra:** Allows users to create specialized AI partnerships for different development phases, leveraging a diverse roster of agents.
+*   **Creative Archaeology Service:** Empowers users to create deep understanding from existing codebases through the RISE (Read, Interpret, Synthesize, Explain) methodology.
+*   **Tension Resolution Engine:** Facilitates the natural progression from the current reality of a project to its desired future state.
+
+---
+
+### Platform Libraries/Components Breakdown
+
+#### Foundation Layer
+*   **RISE Framework Integration Module:** For creative archaeology and intent extraction.
+*   **SpecLang Parser & Generator:** Handles the transformation from natural language to structured specifications.
+*   **Structural Tension Analytics:** Tracks progress through creative advancement patterns.
+*   **Agent Registry & Orchestration:** Coordinates the multi-agent collaboration.
+
+#### Service Layer
+*   **Gemini Integration Service:** Provides the core AI-powered creative assistance.
+*   **GitHub Integration Service:** Manages version control with a focus on narrative and collaborative history.
+*   **Knowledge Graph Service:** Maps semantic relationships for deeper contextual understanding.
+*   **Creative Validation Engine:** Ensures quality and coherence of advancing patterns.
+
+#### UI/Experience Layer
+*   **Symphony Conductor Dashboard:** The main interface for orchestrating the multi-agent collaboration.
+*   **SpecLang Editor with Creative Validation:** A real-time environment for intent refinement.
+*   **Collaborative Canvas:** A visual representation of the project's structural tension dynamics.
+*   **Agent Persona Interfaces:** Unique UIs tailored to each agent's character archetype.
+
+---
 
 ## Technology Stack
 
@@ -47,50 +71,16 @@ This application requires certain environment variables to be available in its e
     *   This token will be necessary for interacting with the GitHub API (e.g., creating branches, pull requests).
     *   Ensure this variable is set in your deployment environment when these features are implemented.
 
-*   **Direct Code Modification for API_KEY (Not Recommended for `API_KEY`):**
-    For quick, isolated local testing *without* a proper environment variable setup for `API_KEY`, you *could* temporarily modify `services/geminiService.ts` by replacing `process.env.API_KEY` directly with your API key string:
-    ```typescript
-    // In services/geminiService.ts
-    // const API_KEY = process.env.API_KEY; // Default line
-    const API_KEY = "YOUR_ACTUAL_GEMINI_API_KEY_HERE"; // Replace with your key for temporary local testing
-    ```
-    **This is strongly discouraged for any shared, production, or version-controlled scenarios due to security risks.** Always prefer a proper environment variable setup. For `GH_TOKEN`, direct code modification should also be avoided for similar security reasons.
-
 ## Project Structure
 
 *   `index.html`: The main entry point for the application.
 *   `index.tsx`: Initializes the React application.
-*   `App.tsx`: The root React component, managing state and routing between different application steps.
-*   `metadata.json`: Contains application metadata, including permissions.
-*   `constants.ts`: Holds mock data and constant values.
-*   `types.ts`: Defines TypeScript interfaces for data structures.
-*   `components/`: Contains reusable UI components.
-*   `pages/`: Contains components for each step/page of the application flow.
-*   `services/`: Contains modules for interacting with external APIs.
-*   `cli/`: Contains command-line interface tools related to the project (e.g., `specValidator.ts`).
-*   `tests/`: Contains tests for CLI tools or other non-React parts.
-*   `ROADMAP.md`: Outlines the future development plans for the application.
-*   `CHANGELOG.md`: Tracks application versions and changes.
-*   `PROJECT_AETHERIAL_ARCHITECT_LEDGER.md`: Documents key decisions, refactorings, and milestones for Project Aetherial Architect.
-*   `AETHERIAL_SYNTHESIS_AND_FORWARD_LOOK.md`: Aetherial agent's perspective on the unified platform vision.
-*   `RESEARCH_REQUEST.md`: Queries for further research to support platform development.
+*   `App.tsx`: The root React component, managing state and orchestrating the agent views.
+*   `components/`: Contains reusable UI components, including the agent-specific views.
+*   `services/`: Contains modules for interacting with external APIs (Gemini, GitHub).
+*   `ROADMAP.md`: Outlines the future development plans for the SYMPHONY platform.
 *   `book/_/ledgers/`: Directory for storing detailed agentic ritual logs and specialized ledger entries.
-*   `ISSUE_08.md`, `ISSUE_10.md`: Supporting documents related to SpecLang and its tooling.
-
-## SpecLang Ecosystem
-
-This application is part of a broader exploration into SpecLang, a structured language for software specifications.
-*   **NL-to-Spec Generation:** The app can generate SpecLang documents from natural language.
-*   **SpecValidator CLI (`cli/specValidator.ts`):** A separate command-line tool (prototype) for validating SpecLang documents.
 
 ## Roadmap
 
-See the [ROADMAP.md](ROADMAP.md) file for an overview of planned features and development phases for the Agentic CoDev Companionship Platform.
-
-## Capabilities
-
-The platform leverages various services, primarily through `services/geminiService.ts` (for AI tasks) and `services/githubService.ts` (for GitHub interactions), to provide its capabilities. These include conceptualization analysis, Q&A, development planning, code implementation, image/diagram generation, and (mocked) GitHub operations.
-
-## Contributing
-
-Contributions are welcome! Please open an issue first to discuss any potential changes or feature requests.
+See the [ROADMAP.md](ROADMAP.md) file for an overview of planned features and development phases for the SYMPHONY platform.

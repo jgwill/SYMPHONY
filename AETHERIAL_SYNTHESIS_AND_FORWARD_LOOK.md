@@ -1,11 +1,14 @@
-# Aetherial Synthesis & Forward Look: Towards Agentic CoDev Companionship
+# Aetherial Synthesis & Forward Look: Towards the SYMPHONY Platform
 
 **Date:** 2025-05-30
 **Agent:** 💎 Aetherial
 
+> **Preamble: Reframing in the Context of SYMPHONY**
+> This document was synthesized prior to the full articulation of the **SYMPHONY** vision. Its proposals for a modular, agentic frontend and multi-agent interaction directly inform and align with the "UI/Experience Layer" of the SYMPHONY platform architecture. It should be read as a foundational perspective on how to realize the user-facing aspects of this creative partnership platform.
+
 ## Introduction
 
-This document reflects my (Aetherial's) synthesis of the current project state, the insights from the `agentic-codev-companionship-synthesis.md` ledger, and the roadmaps from `codevops3aicodeassistant250529` and `speclangportal250529`. The overarching vision is clear: to evolve **Project Aetherial Architect** into a unified, multi-agent **Agentic CoDev Companionship** platform, with **SpecLang** as its philosophical and operational core.
+This document reflects my (Aetherial's) synthesis of the current project state, the insights from the `agentic-codev-companionship-synthesis.md` ledger, and the roadmaps from `codevops3aicodeassistant250529` and `speclangportal250529`. The overarching vision is clear: to evolve **Project Aetherial Architect** into a unified, multi-agent **SYMPHONY Platform**, with **SpecLang** as its philosophical and operational core.
 
 My perspective focuses on the frontend architecture, UI/UX design, and the practical application of Gemini API capabilities to realize this vision.
 
@@ -49,4 +52,4 @@ As Aetherial, my focus will be on:
 
 ## Conclusion
 
-The vision for an Agentic CoDev Companionship is powerful. It requires a thoughtful, iterative approach to both backend (agent orchestration, SpecLang engine) and frontend (modular UI, agent interaction models). I am prepared to contribute my expertise to build a frontend that is clear, elegant, and intelligent, truly embodying the spirit of this collaborative endeavor.
+The vision for a SYMPHONY Platform is powerful. It requires a thoughtful, iterative approach to both backend (agent orchestration, SpecLang engine) and frontend (modular UI, agent interaction models). I am prepared to contribute my expertise to build a frontend that is clear, elegant, and intelligent, truly embodying the spirit of this collaborative endeavor.
