@@ -52,6 +52,7 @@ const WorkspaceAgentView: React.FC = () => {
   const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [isWorkflowRunning, setIsWorkflowRunning] = useState(false);
   const [workflowResults, setWorkflowResults] = useState<WorkflowResult | null>(null);
+  const [workflowImageResult, setWorkflowImageResult] = useState<{ base64Bytes: string, mimeType: string } | null>(null);
 
 
   useEffect(() => {
@@ -106,13 +107,14 @@ const WorkspaceAgentView: React.FC = () => {
     context.setIsLoading(true);
     context.setAppError(null);
     setWorkflowResults(null);
+    setWorkflowImageResult(null); 
 
     try {
-      // Step 1: Mia generates the SpecLang document
+      // Step 1: Mia (🧠) generates the SpecLang document
       const specDoc = await geminiService.nlToSpec(initialPrompt.trim());
       context.updateSharedContext({ specLangDocument: specDoc });
 
-      // Step 2 & 3: Aetherial and Orpheus process the spec in parallel
+      // Step 2 & 3: Aetherial (💎) and Orpheus (🧊) process the spec in parallel
       const [ideas, map] = await Promise.all([
         geminiService.generateUIComponentIdeas(specDoc),
         geminiService.mapSpecToConceptualUI(specDoc)
@@ -123,6 +125,14 @@ const WorkspaceAgentView: React.FC = () => {
         aetherialIdeas: ideas,
         orpheusMap: map
       });
+      
+      // Step 4: Visuals agent (🎨) generates a sketch from the first idea
+      if (ideas && ideas.length > 0) {
+        const firstIdea = ideas[0];
+        const visualsPrompt = `Create a UI wireframe sketch for a component named "${firstIdea.name}". Description: "${firstIdea.description}". Key features to represent: ${firstIdea.keyFeatures.join(', ')}.`;
+        const imageResult = await geminiService.generateImage(visualsPrompt);
+        setWorkflowImageResult(imageResult);
+      }
 
     } catch (error) {
        context.setAppError((error as Error).message || "Workflow failed.");
@@ -163,7 +173,7 @@ const WorkspaceAgentView: React.FC = () => {
     <div className="p-4 sm:p-6 h-full flex flex-col bg-slate-900 text-slate-200 overflow-y-auto custom-scrollbar">
       <div className="flex items-center mb-6 flex-shrink-0">
         <span className="text-3xl mr-3" role="img" aria-label="Workspace Agent Glyph">🏠</span>
-        <h2 className="text-2xl sm:text-3xl font-semibold text-slate-100">Workspace Agent</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold text-slate-100">Symphony Conductor</h2>
       </div>
 
       {feedbackMessage && <div className="mb-4 p-2 bg-green-600/20 text-green-300 border border-green-500 rounded-md text-xs text-center">{feedbackMessage}</div>}
@@ -182,13 +192,13 @@ const WorkspaceAgentView: React.FC = () => {
               {isConceptualizing ? <><ArrowPathIcon className="w-4 h-4 animate-spin"/> Conceptualizing...</> : "Conceptualize & Handoff to Mia"}
             </button>
             <button onClick={handleRunWorkflow} disabled={isLoading || !initialPrompt.trim()} className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-md shadow transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2">
-              {isWorkflowRunning ? <><ArrowPathIcon className="w-4 h-4 animate-spin"/> Running...</> : <><SparklesIcon className="w-4 h-4"/> Spec-to-UI Concept Workflow</>}
+              {isWorkflowRunning ? <><ArrowPathIcon className="w-4 h-4 animate-spin"/> Running...</> : <><SparklesIcon className="w-4 h-4"/> Run Spec-to-Sketch Symphony</>}
             </button>
         </div>
       </Card>
 
       {workflowResults && (
-        <Card title="Automated Workflow Results" titleClassName="text-lg font-semibold text-indigo-400" className="mb-6 bg-slate-800 shadow-md">
+        <Card title="Symphony Workflow Results" titleClassName="text-lg font-semibold text-indigo-400" className="mb-6 bg-slate-800 shadow-md">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <h4 className="text-base font-semibold text-slate-300 mb-2 flex items-center"><SparklesIcon className="w-5 h-5 mr-2 text-cyan-400"/>Aetherial's UI Ideas (💎)</h4>
@@ -198,9 +208,22 @@ const WorkspaceAgentView: React.FC = () => {
                     <h4 className="text-base font-semibold text-slate-300 mb-2 flex items-center"><CubeTransparentIcon className="w-5 h-5 mr-2 text-purple-400"/>Orpheus's Conceptual Map (🧊)</h4>
                     <OrpheusMapDisplay elements={workflowResults.orpheusMap} />
                 </div>
+                 {workflowImageResult ? (
+                    <div className="md:col-span-2 mt-4 border-t border-slate-700 pt-4">
+                        <h4 className="text-base font-semibold text-slate-300 mb-2 flex items-center"><PhotoIcon className="w-5 h-5 mr-2 text-pink-400"/>Visuals Agent Sketch (🎨)</h4>
+                        <div className="bg-slate-700/50 rounded p-2 flex justify-center items-center">
+                            <img src={`data:${workflowImageResult.mimeType};base64,${workflowImageResult.base64Bytes}`} alt="AI generated sketch of a UI component" className="max-w-full max-h-64 object-contain rounded" />
+                        </div>
+                    </div>
+                ) : isWorkflowRunning && (
+                    <div className="md:col-span-2 mt-4 border-t border-slate-700 pt-4 text-center text-slate-400 text-sm">
+                        <ArrowPathIcon className="w-4 h-4 animate-spin inline mr-2"/>
+                        Visuals agent is sketching the first UI concept...
+                    </div>
+                )}
             </div>
             <div className="mt-4 border-t border-slate-700 pt-2">
-                <p className="text-xs text-slate-400">The full SpecLang document generated by Mia (🧠) has been saved to the shared context and can be viewed in her agent panel.</p>
+                <p className="text-xs text-slate-400">This workflow orchestrated Mia (🧠), Aetherial (💎), Orpheus (🧊), and the Visuals Agent (🎨) from a single prompt.</p>
             </div>
         </Card>
       )}

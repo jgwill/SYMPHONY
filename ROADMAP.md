@@ -18,8 +18,8 @@ This document outlines the planned development phases and features for the **SYM
     *   [*] **Agent Registry & Orchestration:**
         *   [x] Implemented `AgentSelectionPanel` for multi-agent collaboration.
         *   [x] Core state management for agents in `App.tsx` and `AppContext`.
-        *   [x] Implemented first multi-agent workflow ("Spec-to-UI Concept").
-        *   [ ] Enhance orchestration to support more complex, multi-agent workflows.
+        *   [*] Enhance orchestration to support more complex, multi-agent workflows.
+        *   [x] Implemented 4-agent "Spec-to-Sketch" workflow (Mia, Aetherial, Orpheus, Visuals).
     *   [*] **SpecLang Parser & Generator:**
         *   [x] Core NL-to-SpecLang functionality implemented in `geminiService`.
         *   [ ] Develop into a more robust, standalone internal library.
@@ -54,7 +54,7 @@ This document outlines the planned development phases and features for the **SYM
 *   **Objective:** Create an intuitive and immersive user interface that facilitates the creative partnership between human and AI agents.
 *   **Key Features & Tasks:**
     *   [*] **Symphony Conductor Dashboard:**
-        *   [x] The main application shell with the `AgentSelectionPanel` serves as the primary orchestration interface.
+        *   [x] The `WorkspaceAgentView` now serves as the primary orchestration interface, launching multi-agent workflows.
         *   [ ] Evolve into a more dynamic dashboard reflecting project state and agent activities.
     *   [*] **SpecLang Editor with Creative Validation:**
         *   [x] `MiaAgentView` provides an editor for SpecLang.
