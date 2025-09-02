@@ -65,6 +65,7 @@ This document outlines the planned development phases and features for the **SYM
     *   [*] **Agent Persona Interfaces:**
         *   [x] Dedicated views for all 8 agents are implemented and functional.
         *   [x] Enhanced Visuals Agent with generative capabilities for visualizing abstract structural concepts.
+        *   [x] Enhanced Miette's view to use live AI for empathetic and narrative generation.
         *   [*] Enhance interfaces to better reflect agent-specific character archetypes.
     *   [ ] **Collaborative Canvas:**
         *   [ ] Develop a visual representation of structural tension dynamics and project flow.

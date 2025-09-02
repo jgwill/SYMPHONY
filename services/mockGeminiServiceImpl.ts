@@ -1,4 +1,3 @@
-
 import { ChatMessage, PlanFile, GroundingChunk, PlanningIdea, IGeminiService, DevelopmentPlan, PlanAction, StructuredComponentIdea, ConceptualUIElement } from "../types";
 import { delay } from '../lib/utils';
 import { 
@@ -340,6 +339,47 @@ The user opens the app, sees a data view, fills out a form, and submits it to se
     return delay(exports, 800);
 };
 
+const mockElaborateUserStory = async (story: string): Promise<string> => {
+    const mockElaboratedStory = `🌸 Regarding your story: "${story.substring(0, 70)}..."
+
+Let's delve deeper. Imagine the user encountering this. What are they truly seeking? 
+Perhaps they're feeling a touch overwhelmed, and this story hints at a solution that could bring them clarity and a sense of control. 
+This isn't just about fulfilling a task; it's about acknowledging their journey and making their experience smoother, more intuitive. 
+How can we ensure this story translates into an interaction that feels supportive and empowering for them?`;
+    return delay(mockElaboratedStory, 1200);
+};
+
+const mockExplainWithMetaphor = async (concept: string): Promise<string> => {
+    const mockMetaphor = `Let's re-imagine "${concept.substring(0, 70)}...". 
+Think of it as a friendly librarian for your project's information. 📚
+Instead of a dusty, complex archive, it's a bright, intuitive space where related ideas are neatly shelved together. 
+When you need a specific piece of knowledge related to "${concept.substring(0, 30)}...", this 'librarian' guides you right to it, perhaps even suggesting a few related 'books' you might find helpful! 
+It's about making complex things feel approachable and interconnected.`;
+    return delay(mockMetaphor, 1000);
+};
+
+const mockGenerateEmpathyPrompts = async (featureDescription: string): Promise<string> => {
+    const mockPrompts = `For your feature: "${featureDescription.substring(0, 70)}...", let's explore the user's perspective with these prompts:
+
+**Before engaging with "${featureDescription.substring(0,30)}...":**
+*   What problem are they trying to solve or what goal are they hoping to achieve?
+*   What are their current frustrations or workarounds related to this?
+*   What are their expectations or hopes for a feature like this?
+
+**While using "${featureDescription.substring(0,30)}...":**
+*   What might they be thinking? Is it intuitive? Confusing?
+*   How are they feeling? (e.g., confident, anxious, efficient, delighted)
+*   What actions are they taking, and are there any obstacles?
+
+**After using "${featureDescription.substring(0,30)}...":**
+*   Did it solve their problem or help achieve their goal? How effectively?
+*   How do they feel now? (e.g., relieved, satisfied, still unsure)
+*   What would they tell a colleague about this feature?
+
+Consider these to build a deeper connection with your user's experience!`;
+    return delay(mockPrompts, 800);
+};
+
 
 export const MockGeminiServiceImpl: Omit<IGeminiService, 'getCapabilities'> = {
   conceptualize: mockConceptualize,
@@ -356,4 +396,7 @@ export const MockGeminiServiceImpl: Omit<IGeminiService, 'getCapabilities'> = {
   analyzeCodebaseForSpec: mockAnalyzeCodebaseForSpec,
   refineSpecWithBdd: mockRefineSpecWithBdd,
   exportSpec: mockExportSpec,
+  elaborateUserStory: mockElaborateUserStory,
+  explainWithMetaphor: mockExplainWithMetaphor,
+  generateEmpathyPrompts: mockGenerateEmpathyPrompts,
 };
