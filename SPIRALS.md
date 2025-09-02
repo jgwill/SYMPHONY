@@ -2,6 +2,12 @@
 
 This document orchestrates the evolution of our agentic systems, guided by the principles of Structural Thinking and Creative Orientation. It serves as the high-level map for projects that foster the growth and refinement of our agents.
 
+## Active Spirals & Communication
+
+Our primary active spiral is **Project LuminaCode**, which focuses on "Agentic Archeology & Feature Crystallization." This initiative analyzes our agent capabilities and crystallizes them into well-defined feature specifications.
+
+**Communication Channel:** To request a new feature crystallization from the agents working on this spiral, please add your request to `Project_LuminaCode/REQUESTS.md`.
+
 ## Projects
 
 *   **[Project LuminaCode](./Project_LuminaCode):** An initiative focused on Agentic Archeology & Feature Crystallization, where we analyze agent upgrades and articulate them as distinct, well-defined features.
