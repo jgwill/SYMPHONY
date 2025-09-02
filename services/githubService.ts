@@ -1,40 +1,46 @@
+
 import { GH_TOKEN_PLACEHOLDER } from '../constants';
-import { delay } from '../lib/utils';
 import { GithubTreeFile } from '../types';
 
 const GH_TOKEN = process.env.GH_TOKEN; 
+const GITHUB_API_BASE_URL = 'https://api.github.com';
 
 if (!GH_TOKEN || GH_TOKEN === GH_TOKEN_PLACEHOLDER || GH_TOKEN === "YOUR_GITHUB_TOKEN") {
-  console.warn(`GitHub Token (GH_TOKEN) not found or is the placeholder. Mock GitHub operations will indicate token absence. Live file tree will not be available.`);
+  console.warn(`GitHub Token (GH_TOKEN) not found or is a placeholder. Live GitHub operations will not be available.`);
 }
+
+const ghFetch = async (url: string, options: RequestInit = {}) => {
+  if (!GH_TOKEN || GH_TOKEN === GH_TOKEN_PLACEHOLDER || GH_TOKEN === "YOUR_GITHUB_TOKEN") {
+    throw new Error("GitHub token (GH_TOKEN) not configured. Cannot perform GitHub operations. Please set it in your environment.");
+  }
+
+  const response = await fetch(`${GITHUB_API_BASE_URL}${url}`, {
+    ...options,
+    headers: {
+      ...options.headers,
+      Authorization: `Bearer ${GH_TOKEN}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    console.error(`GitHub API Error on ${url}:`, errorData);
+    throw new Error(`GitHub API Error (${response.status}): ${errorData.message || 'Unknown error'}`);
+  }
+  
+  if (response.status === 204 || response.headers.get('Content-Length') === '0') {
+    return null; // No content to parse
+  }
+  return response.json();
+};
+
 
 export const githubService = {
   getRepoFileTree: async (repoFullName: string): Promise<GithubTreeFile[]> => {
-    if (!GH_TOKEN || GH_TOKEN === GH_TOKEN_PLACEHOLDER || GH_TOKEN === "YOUR_GITHUB_TOKEN") {
-      throw new Error("GitHub token (GH_TOKEN) not configured. Cannot fetch file tree.");
-    }
-    const [owner, repo] = repoFullName.split('/');
-    if (!owner || !repo) {
-        throw new Error("Invalid repository name format. Expected 'owner/repo'.");
-    }
-
-    // Using main as default, could be parameterized later
-    const url = `https://api.github.com/repos/${owner}/${repo}/git/trees/main?recursive=1`;
-
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${GH_TOKEN}`,
-        'Accept': 'application/vnd.github.v3+json',
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ message: response.statusText }));
-      throw new Error(`Failed to fetch file tree: ${response.status} ${errorData.message || 'Unknown Error'}`);
-    }
-
-    const data = await response.json();
-    if (!data.tree) {
+    const data = await ghFetch(`/repos/${repoFullName}/git/trees/main?recursive=1`);
+    if (!data || !data.tree) {
         throw new Error("Invalid response from GitHub API: 'tree' property is missing.");
     }
     return data.tree as GithubTreeFile[];
@@ -42,22 +48,87 @@ export const githubService = {
 
   createPullRequest: async (
     repoFullName: string, 
-    branchName: string, 
-    title: string, 
-    body: string, 
-    baseBranch: string = 'main'
+    newBranchName: string, 
+    baseBranch: string,
+    commitMessage: string,
+    prTitle: string,
+    prBody: string,
+    filesToCommit: { path: string, content: string }[]
   ): Promise<{ html_url: string; number: number; message?: string }> => {
-    if (!GH_TOKEN || GH_TOKEN === GH_TOKEN_PLACEHOLDER || GH_TOKEN === "YOUR_GITHUB_TOKEN") {
-      return Promise.reject(new Error("GitHub token (GH_TOKEN) not configured. Cannot create pull request. Please set it in your environment."));
-    }
-    console.log(`Mocking GitHub API: Create PR for ${repoFullName}`);
-    console.log(`Branch: ${branchName}, Base: ${baseBranch}, Title: ${title}`);
-    await delay(null, 1500); 
-    const prNumber = Math.floor(Math.random() * 1000) + 1;
+    
+    // 1. Get the latest commit SHA of the base branch
+    const baseBranchRef = await ghFetch(`/repos/${repoFullName}/git/ref/heads/${baseBranch}`);
+    const baseCommitSha = baseBranchRef.object.sha;
+
+    // 2. Get the tree SHA of the base commit
+    const baseCommit = await ghFetch(`/repos/${repoFullName}/git/commits/${baseCommitSha}`);
+    const baseTreeSha = baseCommit.tree.sha;
+
+    // 3. Create a new branch
+    await ghFetch(`/repos/${repoFullName}/git/refs`, {
+        method: 'POST',
+        body: JSON.stringify({
+            ref: `refs/heads/${newBranchName}`,
+            sha: baseCommitSha
+        })
+    });
+
+    // 4. Create blobs for each file
+    const fileBlobs = await Promise.all(filesToCommit.map(file => 
+      ghFetch(`/repos/${repoFullName}/git/blobs`, {
+        method: 'POST',
+        body: JSON.stringify({ content: file.content, encoding: 'utf-8' })
+      })
+    ));
+
+    // 5. Create a new tree with the new blobs
+    const newTree = await ghFetch(`/repos/${repoFullName}/git/trees`, {
+      method: 'POST',
+      body: JSON.stringify({
+        base_tree: baseTreeSha,
+        tree: filesToCommit.map((file, index) => ({
+          path: file.path,
+          mode: '100644', // file (blob)
+          type: 'blob',
+          sha: fileBlobs[index].sha
+        }))
+      })
+    });
+
+    // 6. Create a new commit
+    const newCommit = await ghFetch(`/repos/${repoFullName}/git/commits`, {
+      method: 'POST',
+      body: JSON.stringify({
+        message: commitMessage,
+        tree: newTree.sha,
+        parents: [baseCommitSha]
+      })
+    });
+    
+    // 7. Update the new branch reference to point to the new commit
+    await ghFetch(`/repos/${repoFullName}/git/refs/heads/${newBranchName}`, {
+      method: 'PATCH', // Use PATCH for updates
+      body: JSON.stringify({
+        sha: newCommit.sha,
+        force: false // Set to false to avoid overwriting
+      })
+    });
+
+    // 8. Create the pull request
+    const prData = await ghFetch(`/repos/${repoFullName}/pulls`, {
+      method: 'POST',
+      body: JSON.stringify({
+        title: prTitle,
+        body: prBody,
+        head: newBranchName,
+        base: baseBranch
+      })
+    });
+
     return {
-      html_url: `https://github.com/${repoFullName}/pull/${prNumber}`,
-      number: prNumber,
-      message: `Mock: Pull request #${prNumber} created successfully for branch '${branchName}'!`
+      html_url: prData.html_url,
+      number: prData.number,
+      message: `Successfully created Pull Request #${prData.number}!`
     };
   },
 
@@ -66,16 +137,7 @@ export const githubService = {
     branchName: string, 
     commitMessage: string
   ): Promise<{ commit_url: string; message?: string }> => {
-    if (!GH_TOKEN || GH_TOKEN === GH_TOKEN_PLACEHOLDER || GH_TOKEN === "YOUR_GITHUB_TOKEN") {
-      return Promise.reject(new Error("GitHub token (GH_TOKEN) not configured. Cannot push to branch. Please set it in your environment."));
-    }
-    console.log(`Mocking GitHub API: Push to ${repoFullName}, branch ${branchName}`);
-    console.log(`Commit Message: ${commitMessage}`);
-    await delay(null, 1200); 
-    const commitSha = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    return {
-      commit_url: `https://github.com/${repoFullName}/commit/${commitSha}`,
-      message: `Mock: Changes pushed successfully to branch '${branchName}'!`
-    };
+    // This is a placeholder for a more complex direct push logic
+    throw new Error("Direct push functionality is not implemented yet. Please use the Pull Request flow.");
   },
 };

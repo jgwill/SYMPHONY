@@ -257,6 +257,27 @@ export interface IGeminiService {
   getCapabilities: () => string[];
 }
 
+// This is separate as it's not an AI service, but a client for a specific API
+export interface IGithubService {
+  getRepoFileTree(repoFullName: string): Promise<GithubTreeFile[]>;
+  createPullRequest(
+    repoFullName: string,
+    newBranchName: string,
+    baseBranch: string,
+    commitMessage: string,
+    prTitle: string,
+    prBody: string,
+    filesToCommit: { path: string, content: string }[]
+  ): Promise<{ html_url: string; number: number; message?: string }>;
+  pushToBranch(
+    repoFullName: string,
+    branchName: string,
+    commitMessage: string
+    // In a real scenario, this would also take file content
+  ): Promise<{ commit_url: string; message?: string }>;
+}
+
+
 export interface GithubTreeFile {
     path: string;
     mode: string;
