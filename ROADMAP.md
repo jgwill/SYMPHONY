@@ -18,13 +18,14 @@ This document outlines the planned development phases and features for the **SYM
     *   [*] **Agent Registry & Orchestration:**
         *   [x] Implemented `AgentSelectionPanel` for multi-agent collaboration.
         *   [x] Core state management for agents in `App.tsx` and `AppContext`.
-        *   [*] Enhance orchestration to support more complex, multi-agent workflows.
         *   [x] Implemented 4-agent "Spec-to-Sketch" workflow (Mia, Aetherial, Orpheus, Visuals).
+        *   [*] Enhance orchestration to support more complex, multi-agent workflows.
     *   [*] **SpecLang Parser & Generator:**
         *   [x] Core NL-to-SpecLang functionality implemented in `geminiService`.
         *   [ ] Develop into a more robust, standalone internal library.
-    *   [ ] **RISE Framework Integration Module:**
-        *   [ ] Implement "Creative Archaeology Service" for deep understanding of existing codebases.
+    *   [*] **RISE Framework Integration Module:**
+        *   [x] Implemented `analyzeCodebaseForSpec`, `refineSpecWithBdd`, and `exportSpec` prototypes in `MiaAgentView`.
+        *   [*] Mature into a full "Creative Archaeology Service" for deep understanding of existing codebases.
     *   [ ] **Structural Tension Analytics:**
         *   [ ] Develop a "Tension Resolution Engine" to track progress from current reality to desired outcomes.
 
@@ -36,13 +37,13 @@ This document outlines the planned development phases and features for the **SYM
 *   **Key Features & Tasks:**
     *   [*] **Gemini Integration Service:**
         *   [x] Core service refactored into `RealGeminiServiceImpl` and `MockGeminiServiceImpl`.
-        *   [ ] Continuously refine prompts and integrate new Gemini capabilities.
+        *   [*] Continuously refine prompts and integrate new Gemini capabilities.
     *   [*] **GitHub Integration Service:**
         *   [x] Implemented live read-only file tree fetching.
         *   [x] Commit/PR functionalities are currently mocked.
-        *   [*] Implement real branch creation and commit capabilities.
+        *   [ ] Implement real branch creation and commit capabilities.
     *   [*] **Creative Validation Engine:**
-        *   [x] Nyro agent provides conceptual validation for syntax and logic.
+        *   [x] Nyro agent provides on-demand validation for syntax and logic in both `MiaAgentView` and `NyroAgentView`.
         *   [*] Enhance with more sophisticated quality assurance for advancing patterns.
     *   [ ] **Knowledge Graph Service:**
         *   [ ] Implement semantic relationship mapping for deeper context understanding.
@@ -55,14 +56,14 @@ This document outlines the planned development phases and features for the **SYM
 *   **Key Features & Tasks:**
     *   [*] **Symphony Conductor Dashboard:**
         *   [x] The `WorkspaceAgentView` now serves as the primary orchestration interface, launching multi-agent workflows.
-        *   [ ] Evolve into a more dynamic dashboard reflecting project state and agent activities.
+        *   [*] Evolve into a more dynamic dashboard reflecting project state and agent activities.
     *   [*] **SpecLang Editor with Creative Validation:**
         *   [x] `MiaAgentView` provides an editor for SpecLang.
         *   [x] Integrated on-demand validation feedback via Mia -> Nyro agent handoff.
         *   [ ] Implement real-time intent refinement and suggestions.
     *   [*] **Agent Persona Interfaces:**
-        *   [x] Dedicated views for each agent (Mia, Aetherial, Nyro, etc.) are implemented.
-        *   [ ] Enhance interfaces to better reflect agent-specific character archetypes.
+        *   [x] Dedicated views for all 8 agents are implemented and functional.
+        *   [*] Enhance interfaces to better reflect agent-specific character archetypes.
     *   [ ] **Collaborative Canvas:**
         *   [ ] Develop a visual representation of structural tension dynamics and project flow.
 
