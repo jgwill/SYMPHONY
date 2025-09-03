@@ -1,5 +1,4 @@
 
-
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { AppContext } from '../../App';
 import { AppContextType, PlanFile } from '../../types';
@@ -7,6 +6,8 @@ import { CodeBracketIcon, SparklesIcon, DocumentIcon, ArrowPathIcon } from '../i
 import Card from '../Card'; 
 import { cn } from '../../lib/utils';
 import { geminiService } from '../../services/geminiService'; 
+import SampleDropdown from '../SampleDropdown';
+import { NYRO_SAMPLES } from '../../constants/samples';
 
 interface NyroFeedback {
   id: string;
@@ -97,6 +98,9 @@ const NyroAgentView: React.FC = () => {
       </p>
 
       <Card title="Analyze Text / Code" titleClassName="text-md sm:text-lg text-slate-200" headerContent={<DocumentIcon className="w-5 h-5 text-purple-400" />} className="mb-6 flex-shrink-0 bg-slate-800">
+        <div className="flex justify-end mb-1">
+            <SampleDropdown samples={NYRO_SAMPLES} onSelect={setInputText} />
+        </div>
         <textarea
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}

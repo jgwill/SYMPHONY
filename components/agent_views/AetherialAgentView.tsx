@@ -1,5 +1,4 @@
 
-
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { AppContext } from '../../App'; 
 import { AppContextType, PlanFile, PlanAction, AppStep, StructuredComponentIdea, SharedAgentContext } from '../../types';
@@ -7,6 +6,8 @@ import { SparklesIcon, PaperAirplaneIcon, DocumentIcon, PhotoIcon, CheckIcon as 
 import { cn } from '../../lib/utils';
 import { geminiService } from '../../services/geminiService'; 
 import { MarkdownEditorPreview } from '../MarkdownEditorPreview'; 
+import SampleDropdown from '../SampleDropdown';
+import { AETHERIAL_IDEATION_SAMPLES, AETHERIAL_REVISE_SAMPLES } from '../../constants/samples';
 
 // Re-using ActionChecklistItem for this view
 const ActionChecklistItem: React.FC<{action: PlanAction, onToggle: (actionId: string) => void, pathPrefix?: string}> = ({action, onToggle, pathPrefix = ''}) => {
@@ -259,6 +260,9 @@ The sketch should help visualize how users would interact with these acceptance 
           <p className="text-slate-400 mb-3 text-xs flex-shrink-0">
             Paste a relevant section from the SpecLang document below (e.g., from Mia's view). Or, select a file from the File Tree to work on its implementation.
           </p>
+          <div className="flex justify-end mb-1">
+            <SampleDropdown samples={AETHERIAL_IDEATION_SAMPLES} onSelect={setSpecLangSectionForIdeation} />
+          </div>
           <textarea
             value={specLangSectionForIdeation}
             onChange={(e) => setSpecLangSectionForIdeation(e.target.value)}
@@ -381,8 +385,11 @@ The sketch should help visualize how users would interact with these acceptance 
             {!isGeneratingInitialFile && (
             <div className="mt-3 border-t border-slate-700 pt-3 flex-shrink-0 space-y-3">
                 <div>
-                  <label htmlFor="revise-prompt-input" className="text-xs font-semibold text-slate-400 block mb-1 ml-1">Revise with AI</label>
-                  <div className="relative">
+                    <div className="flex justify-between items-center mb-1">
+                        <label htmlFor="revise-prompt-input" className="text-xs font-semibold text-slate-400 block ml-1">Revise with AI</label>
+                        <SampleDropdown samples={AETHERIAL_REVISE_SAMPLES} onSelect={setRevisePrompt} />
+                    </div>
+                    <div className="relative">
                       <input id="revise-prompt-input" type="text" value={revisePrompt} onChange={(e) => setRevisePrompt(e.target.value)}
                           onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleReviseFile()}
                           placeholder={`e.g., "Add error handling to the main function"`}
@@ -393,7 +400,7 @@ The sketch should help visualize how users would interact with these acceptance 
                           aria-label="Revise file content with AI">
                           {isRevisingFile ? <ArrowPathIcon className="w-4 h-4 animate-spin"/> : <PaperAirplaneIcon className="w-4 h-4" />}
                       </button>
-                  </div>
+                    </div>
                 </div>
                 <button onClick={handleMarkAsImplemented}
                     disabled={isLoading || activeFile.status === 'implemented'}

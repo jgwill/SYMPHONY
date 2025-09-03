@@ -1,13 +1,13 @@
 
-
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { AppContext } from '../../App'; 
 import { AppContextType, AppStep, ChatMessage, StructuredComponentIdea, ConceptualUIElement } from '../../types';
-// Fix: Added ChatBubbleLeftEllipsisIcon to the import list.
-import { FolderIcon, PlusCircleIcon, TicketIcon, PhotoIcon, CodeBracketIcon, ArrowUpOnSquareIcon, LightBulbIcon, PaperAirplaneIcon, ArrowPathIcon, SparklesIcon, CubeTransparentIcon, CircleStackIcon, MusicalNoteIcon, AcademicCapIcon, ChatBubbleLeftEllipsisIcon } from '../icons';
+import { ChatBubbleLeftEllipsisIcon, FolderIcon, PlusCircleIcon, TicketIcon, PhotoIcon, CodeBracketIcon, ArrowUpOnSquareIcon, LightBulbIcon, PaperAirplaneIcon, ArrowPathIcon, SparklesIcon, CubeTransparentIcon, CircleStackIcon, MusicalNoteIcon, AcademicCapIcon } from '../icons';
 import { cn } from '../../lib/utils';
 import { geminiService } from '../../services/geminiService'; 
 import Card from '../Card';
+import SampleDropdown from '../SampleDropdown';
+import { WORKSPACE_CONCEPTUALIZATION_SAMPLES, WORKSPACE_QA_SAMPLES } from '../../constants/samples';
 
 const OrpheusMapDisplay: React.FC<{ elements: ConceptualUIElement[], level?: number }> = ({ elements, level = 0 }) => (
     <div style={{ marginLeft: `${level * 1}rem` }}>
@@ -181,6 +181,9 @@ const WorkspaceAgentView: React.FC = () => {
             headerContent={<LightBulbIcon className="w-6 h-6 text-cyan-400" />} 
             className="bg-slate-800 shadow-md"
           >
+            <div className="flex justify-end mb-1">
+                <SampleDropdown samples={WORKSPACE_CONCEPTUALIZATION_SAMPLES} onSelect={setInitialPrompt} />
+            </div>
             <textarea
               value={initialPrompt}
               onChange={(e) => setInitialPrompt(e.target.value)}
@@ -286,11 +289,16 @@ const WorkspaceAgentView: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div className="relative mt-auto">
-                <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()} placeholder="Ask the Workspace Agent..." className="w-full p-2 pl-3 pr-10 bg-slate-700 border border-slate-600 rounded-lg text-slate-200 focus:ring-1 focus:ring-cyan-500 disabled:opacity-50 text-sm" disabled={isLoading} aria-label="Chat input with Workspace Agent"/>
-                <button type="button" onClick={() => !isLoading && chatInput.trim() && handleSendMessage()} disabled={isLoading || !chatInput.trim()} className={cn("absolute right-2 top-1/2 -translate-y-1/2 p-1 text-cyan-400 hover:text-cyan-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400", (isLoading || !chatInput.trim()) && "opacity-50 cursor-not-allowed")} aria-label="Send chat message">
-                  {isSendingMessage ? <ArrowPathIcon className="w-4 h-4 animate-spin"/> : <PaperAirplaneIcon className="w-4 h-4" />}
-                </button>
+              <div className="mt-auto">
+                <div className="flex justify-end mb-1">
+                    <SampleDropdown samples={WORKSPACE_QA_SAMPLES} onSelect={setChatInput} />
+                </div>
+                <div className="relative">
+                    <input type="text" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSendMessage()} placeholder="Ask the Workspace Agent..." className="w-full p-2 pl-3 pr-10 bg-slate-700 border border-slate-600 rounded-lg text-slate-200 focus:ring-1 focus:ring-cyan-500 disabled:opacity-50 text-sm" disabled={isLoading} aria-label="Chat input with Workspace Agent"/>
+                    <button type="button" onClick={() => !isLoading && chatInput.trim() && handleSendMessage()} disabled={isLoading || !chatInput.trim()} className={cn("absolute right-2 top-1/2 -translate-y-1/2 p-1 text-cyan-400 hover:text-cyan-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400", (isLoading || !chatInput.trim()) && "opacity-50 cursor-not-allowed")} aria-label="Send chat message">
+                    {isSendingMessage ? <ArrowPathIcon className="w-4 h-4 animate-spin"/> : <PaperAirplaneIcon className="w-4 h-4" />}
+                    </button>
+                </div>
               </div>
            </Card>
 

@@ -1,11 +1,12 @@
 
-
 import React, { useContext, useState, useCallback } from 'react';
 import { AppContext } from '../../App';
 import { AppContextType, LedgerEntry as LedgerEntryType } from '../../types';
 import { ClipboardDocumentListIcon, PlusCircleIcon, BookOpenIcon, ArrowPathIcon } from '../icons';
 import Card from '../Card'; 
 import { cn } from '../../lib/utils';
+import SampleDropdown from '../SampleDropdown';
+import { SERAPHINE_SAMPLES } from '../../constants/samples';
 
 const SeraphineAgentView: React.FC = () => {
   const context = useContext(AppContext) as AppContextType | null;
@@ -119,6 +120,9 @@ const SeraphineAgentView: React.FC = () => {
       </p>
 
       <Card title="Log New Ritual / Milestone" titleClassName="text-md sm:text-lg text-slate-200" headerContent={<PlusCircleIcon className="w-5 h-5 text-green-400" />} className="mb-6 flex-shrink-0 bg-slate-800">
+        <div className="flex justify-end mb-1">
+            <SampleDropdown samples={SERAPHINE_SAMPLES} onSelect={setNewRitualText} />
+        </div>
         <textarea
           value={newRitualText}
           onChange={(e) => setNewRitualText(e.target.value)}

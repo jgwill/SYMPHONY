@@ -1,5 +1,4 @@
 
-
 import React, { useState, useContext, useCallback, useEffect, useRef } from 'react';
 import { AppContext } from '../../App';
 import { AppContextType, AppStep } from '../../types';
@@ -7,6 +6,8 @@ import { geminiService } from '../../services/geminiService';
 import { PhotoIcon, PaperAirplaneIcon, ListBulletIcon, ArrowPathIcon, SparklesIcon } from '../icons';
 import { cn } from '../../lib/utils';
 import Card from '../Card';
+import SampleDropdown from '../SampleDropdown';
+import { VISUALS_SAMPLES } from '../../constants/samples';
 
 declare global {
   interface Window {
@@ -131,7 +132,10 @@ const VisualsAgentView: React.FC = () => {
             <button onClick={handleDiagramFromSpec} disabled={isLoading || !context?.agentMemory.sharedContext.specLangDocument} className="text-xs p-2 bg-slate-700 hover:bg-slate-600 rounded-md disabled:opacity-50" title={!context?.agentMemory.sharedContext.specLangDocument ? "No SpecLang document loaded" : "Generate diagram from current SpecLang"}>Diagram from SpecLang</button>
         </div>
       </Card>
-
+      
+      <div className="flex justify-end mb-1">
+        <SampleDropdown samples={VISUALS_SAMPLES} onSelect={setPrompt} />
+      </div>
       <div className="bg-slate-800 shadow-xl rounded-lg p-0.5 mb-2 flex-shrink-0">
         <textarea
           value={prompt}

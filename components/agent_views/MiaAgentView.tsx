@@ -1,5 +1,4 @@
 
-
 import React, { useContext, useCallback, useEffect, useState } from 'react';
 import { AppContext } from '../../App';
 import { AppContextType, AppStep, PlanFile, DevelopmentPlan, PlanAction } from '../../types';
@@ -9,6 +8,8 @@ import { geminiService } from '../../services/geminiService';
 import { cn } from '../../lib/utils';
 import Card from '../Card';
 import { marked } from 'marked'; 
+import SampleDropdown from '../SampleDropdown';
+import { SPECLANG_SAMPLES } from '../../constants/samples';
 declare var DOMPurify: any; 
 
 
@@ -365,7 +366,8 @@ Now, create the full SpecLang document.`;
                         onContentChange={handleSpecLangChange}
                         readOnly={isLoading}
                         viewerHeight="h-full"
-                        ariaLabelledBy="miaPageTitle" 
+                        ariaLabelledBy="miaPageTitle"
+                        headerContent={<SampleDropdown samples={SPECLANG_SAMPLES} onSelect={handleSpecLangChange} />}
                     />
                     ) : (!isLoading && !isGeneratingSpec && !isAnalyzing && !isRefining && !appError && (
                     <div className="h-full flex flex-col items-center justify-center text-slate-500 p-2 text-xs text-center">

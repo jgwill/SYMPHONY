@@ -11,6 +11,7 @@ interface MarkdownEditorPreviewProps {
   viewerHeight?: string;
   ariaLabelledBy?: string;
   initialMode?: 'edit' | 'preview';
+  headerContent?: React.ReactNode;
 }
 
 type ToolbarAction = 'bold' | 'italic' | 'ul' | 'codeblock' | 'link' | 'heading' | 'clear' | 'template';
@@ -31,6 +32,7 @@ export const MarkdownEditorPreview: React.FC<MarkdownEditorPreviewProps> = ({
   viewerHeight = 'h-96', 
   ariaLabelledBy,
   initialMode,
+  headerContent,
 }) => {
   const [mode, setMode] = useState<'edit' | 'preview'>(initialMode || (readOnly ? 'preview' : 'edit'));
   const [content, setContent] = useState(initialContent);
@@ -240,6 +242,7 @@ export const MarkdownEditorPreview: React.FC<MarkdownEditorPreviewProps> = ({
           >
             Preview
           </button>
+          {headerContent && <div className="ml-auto pr-2">{headerContent}</div>}
         </div>
       )}
        {!readOnly && mode === 'edit' && (

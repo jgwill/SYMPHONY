@@ -7,4 +7,5 @@ export { default as ResizablePanelsLayout } from './ResizablePanelsLayout'; // E
 export { default as Card } from './Card'; // Export Card component
 export { default as MarkdownEditorPreview } from './MarkdownEditorPreview'; // Export MarkdownEditorPreview
 export { default as AgentSelectionPanel } from './AgentSelectionPanel'; // Export AgentSelectionPanel
+export { default as SampleDropdown } from './SampleDropdown';
 export * from './agent_views'; // Export agent views

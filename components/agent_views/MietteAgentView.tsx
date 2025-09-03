@@ -1,12 +1,13 @@
 
-
 import React, { useContext, useState, useCallback } from 'react';
 import { AppContext } from '../../App'; 
 import { AppContextType } from '../../types';
 import { LightBulbIcon, ChatBubbleLeftEllipsisIcon, UserGroupIcon, PaperAirplaneIcon, ArrowPathIcon } from '../icons';
-import Card from '../Card'; // Updated import
+import Card from '../Card';
 import { cn } from '../../lib/utils';
 import { geminiService } from '../../services/geminiService';
+import SampleDropdown from '../SampleDropdown';
+import { MIETTE_STORY_SAMPLES, MIETTE_CONCEPT_SAMPLES, MIETTE_EMPATHY_SAMPLES } from '../../constants/samples';
 
 interface MietteInteractionResult {
   type: 'story' | 'metaphor' | 'empathy_prompts';
@@ -101,6 +102,7 @@ const MietteAgentView: React.FC = () => {
       buttonText: "Elaborate with Empathy",
       ariaLabel: "Elaborate user story with empathy",
       isLoading: isElaborating,
+      samples: MIETTE_STORY_SAMPLES,
     },
     {
       title: "Metaphorical Explanation",
@@ -112,6 +114,7 @@ const MietteAgentView: React.FC = () => {
       buttonText: "Explain with Metaphor",
       ariaLabel: "Explain concept with metaphor",
       isLoading: isExplaining,
+      samples: MIETTE_CONCEPT_SAMPLES,
     },
     {
       title: "Empathy Map Prompts",
@@ -123,6 +126,7 @@ const MietteAgentView: React.FC = () => {
       buttonText: "Get Empathy Prompts",
       ariaLabel: "Generate empathy map prompts",
       isLoading: isGeneratingPrompts,
+      samples: MIETTE_EMPATHY_SAMPLES,
     },
   ];
 
@@ -139,6 +143,9 @@ const MietteAgentView: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6 flex-shrink-0">
         {interactionSections.map((section) => (
           <Card key={section.title} title={section.title} titleClassName="text-md sm:text-lg text-slate-200" headerContent={section.icon} className="bg-slate-800">
+            <div className="flex justify-end mb-1">
+                <SampleDropdown samples={section.samples} onSelect={section.setInputState} />
+            </div>
             <textarea
               value={section.inputState}
               onChange={(e) => section.setInputState(e.target.value)}

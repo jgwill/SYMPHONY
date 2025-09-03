@@ -1,5 +1,4 @@
 
-
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { AppContext } from '../../App';
 import { AppContextType, ConceptualUIElement } from '../../types';
@@ -7,6 +6,8 @@ import { CubeTransparentIcon, SparklesIcon, ArrowPathIcon, ClipboardDocumentList
 import Card from '../Card';
 import { cn } from '../../lib/utils';
 import { geminiService } from '../../services/geminiService';
+import SampleDropdown from '../SampleDropdown';
+import { SPECLANG_SAMPLES } from '../../constants/samples';
 
 const generateCodeStub = (element: ConceptualUIElement): string => {
     const componentName = element.name?.replace(/\s+/g, '') || `${element.type}${element.id.slice(-4)}`;
@@ -30,7 +31,9 @@ export default ${componentName};
 };
 
 
-const ConceptualUIElementDisplay: React.FC<{ element: ConceptualUIElement; level: number; onSelect: (element: ConceptualUIElement) => void; isSelected: boolean }> = ({ element, level, onSelect, isSelected }) => {
+// Fix: Pass selectedElement state down for recursive check instead of isSelected boolean
+const ConceptualUIElementDisplay: React.FC<{ element: ConceptualUIElement; level: number; onSelect: (element: ConceptualUIElement) => void; selectedElement: ConceptualUIElement | null }> = ({ element, level, onSelect, selectedElement }) => {
+  const isSelected = selectedElement?.id === element.id;
   return (
     <div 
       style={{ marginLeft: `${level * 1.25}rem` }} 
@@ -63,7 +66,7 @@ const ConceptualUIElementDisplay: React.FC<{ element: ConceptualUIElement; level
       {element.children && element.children.length > 0 && (
         <div className="mt-1">
           {element.children.map(child => (
-            <ConceptualUIElementDisplay key={child.id} element={child} level={level + 1} onSelect={onSelect} isSelected={isSelected} />
+            <ConceptualUIElementDisplay key={child.id} element={child} level={level + 1} onSelect={onSelect} selectedElement={selectedElement} />
           ))}
         </div>
       )}
@@ -131,6 +134,9 @@ const OrpheusRendererAgentView: React.FC = () => {
       </p>
 
       <Card title="SpecLang Input" titleClassName="text-md sm:text-lg text-slate-200" className="mb-6 flex-shrink-0 bg-slate-800">
+        <div className="flex justify-end mb-1">
+            <SampleDropdown samples={SPECLANG_SAMPLES} onSelect={setSpecLangInput} />
+        </div>
         <textarea
           value={specLangInput}
           onChange={(e) => setSpecLangInput(e.target.value)}
@@ -172,7 +178,7 @@ const OrpheusRendererAgentView: React.FC = () => {
             {!isMapping && conceptualUI.length > 0 ? (
             <div className="space-y-1 overflow-y-auto custom-scrollbar flex-grow bg-slate-800 p-3 rounded-md">
                 {conceptualUI.map((element) => (
-                <ConceptualUIElementDisplay key={element.id} element={element} level={0} onSelect={handleSelectElement} isSelected={selectedElement?.id === element.id} />
+                <ConceptualUIElementDisplay key={element.id} element={element} level={0} onSelect={handleSelectElement} selectedElement={selectedElement} />
                 ))}
             </div>
             ) : !isMapping && (
