@@ -1,4 +1,3 @@
-
 export interface Sample {
   label: string;
   value: string;

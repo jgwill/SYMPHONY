@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, useCallback, useEffect, useRef } from 'react';
 import { AppContext } from '../../App';
 import { AppContextType, AppStep } from '../../types';

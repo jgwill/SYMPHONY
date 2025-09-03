@@ -1,4 +1,3 @@
-
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { AppContext } from '../../App'; 
 import { AppContextType, AppStep, ChatMessage, StructuredComponentIdea, ConceptualUIElement } from '../../types';
