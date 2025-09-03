@@ -16,6 +16,8 @@ interface NyroFeedback {
   timestamp: number;
 }
 
+const NYRO_FEEDBACK_STORAGE_KEY = 'symphony_nyro_feedback_v1';
+
 const NyroAgentView: React.FC = () => {
   const context = useContext(AppContext) as AppContextType | null;
   
@@ -25,6 +27,33 @@ const NyroAgentView: React.FC = () => {
   const [isSuggesting, setIsSuggesting] = useState(false);
 
   const activeFile = context?.agentMemory.sharedContext.activeFileForImplementation;
+
+  // Load feedback from localStorage on initial component mount
+  useEffect(() => {
+    try {
+      const storedFeedback = localStorage.getItem(NYRO_FEEDBACK_STORAGE_KEY);
+      if (storedFeedback) {
+        const parsedFeedback = JSON.parse(storedFeedback);
+        if (Array.isArray(parsedFeedback)) {
+          setFeedbackItems(parsedFeedback);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load Nyro feedback from localStorage:", error);
+      // Clear corrupted data
+      localStorage.removeItem(NYRO_FEEDBACK_STORAGE_KEY);
+    }
+  }, []);
+
+  // Save feedback to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(NYRO_FEEDBACK_STORAGE_KEY, JSON.stringify(feedbackItems));
+    } catch (error) {
+      console.error("Failed to save Nyro feedback to localStorage:", error);
+    }
+  }, [feedbackItems]);
+
 
   useEffect(() => {
     if (activeFile) { 
