@@ -44,6 +44,7 @@ This document outlines the planned development phases and features for the **SYM
         *   [ ] Implement real branch creation and direct commit capabilities.
     *   [*] **Creative Validation Engine:**
         *   [x] Nyro agent provides on-demand validation for syntax and logic in both `MiaAgentView` and `NyroAgentView`.
+        *   [x] Implement real-time, automated SpecLang validation.
         *   [*] Enhance with more sophisticated quality assurance for advancing patterns.
     *   [ ] **Knowledge Graph Service:**
         *   [ ] Implement semantic relationship mapping for deeper context understanding.
@@ -63,6 +64,8 @@ This document outlines the planned development phases and features for the **SYM
         *   [x] Implement real-time, automated SpecLang validation.
     *   [*] **Agent Persona Interfaces:**
         *   [x] Dedicated views for all 8 agents are implemented and functional.
+        *   [x] Enhanced Visuals Agent with generative capabilities for visualizing abstract structural concepts.
+        *   [x] Enhanced Miette's view to use live AI for empathetic and narrative generation.
         *   [*] Enhance interfaces to better reflect agent-specific character archetypes.
     *   [ ] **Collaborative Canvas:**
         *   [ ] Develop a visual representation of structural tension dynamics and project flow.

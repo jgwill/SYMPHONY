@@ -29,6 +29,9 @@ if (API_KEY && API_KEY !== API_KEY_PLACEHOLDER && API_KEY !== "YOUR_GEMINI_API_K
       analyzeCodebaseForSpec: realServiceInstance.analyzeCodebaseForSpec.bind(realServiceInstance),
       refineSpecWithBdd: realServiceInstance.refineSpecWithBdd.bind(realServiceInstance),
       exportSpec: realServiceInstance.exportSpec.bind(realServiceInstance),
+      elaborateUserStory: realServiceInstance.elaborateUserStory.bind(realServiceInstance),
+      explainWithMetaphor: realServiceInstance.explainWithMetaphor.bind(realServiceInstance),
+      generateEmpathyPrompts: realServiceInstance.generateEmpathyPrompts.bind(realServiceInstance),
     };
     console.info("Gemini API service initialized with real API key.");
   } catch (e) {

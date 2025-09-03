@@ -254,6 +254,11 @@ export interface IGeminiService {
   refineSpecWithBdd: (specLang: string) => Promise<string>;
   exportSpec: (specLang: string) => Promise<{ llm: string; agent: string; human: string }>;
 
+  // Miette Agent Capabilities
+  elaborateUserStory: (story: string) => Promise<string>;
+  explainWithMetaphor: (concept: string) => Promise<string>;
+  generateEmpathyPrompts: (featureDescription: string) => Promise<string>;
+
   getCapabilities: () => string[];
 }
 

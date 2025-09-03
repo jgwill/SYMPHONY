@@ -20,7 +20,10 @@ import {
   NYRO_SUGGEST_REFINEMENTS_SYSTEM_INSTRUCTION,
   ANALYZE_CODEBASE_FOR_SPEC_SYSTEM_INSTRUCTION,
   REFINE_SPEC_WITH_BDD_SYSTEM_INSTRUCTION,
-  EXPORT_SPEC_SYSTEM_INSTRUCTION
+  EXPORT_SPEC_SYSTEM_INSTRUCTION,
+  MIETTE_ELABORATE_STORY_SYSTEM_INSTRUCTION,
+  MIETTE_EXPLAIN_METAPHOR_SYSTEM_INSTRUCTION,
+  MIETTE_EMPATHY_PROMPTS_SYSTEM_INSTRUCTION
 } from './geminiPrompts';
 
 const INVALID_API_KEY_ERROR_MESSAGE = "Critical API Key Error: The Gemini API rejected the API key as invalid. This key is sourced from the 'process.env.API_KEY' environment variable. Please urgently verify that 'process.env.API_KEY' is correctly set to a valid Google Gemini API key in your local development environment. The application cannot function with AI features without a valid key. Mock data cannot be used if an invalid key is actively provided.";
@@ -463,6 +466,39 @@ Ensure output is a single JSON array matching the ConceptualUIElement structure.
         return parsedExports;
     }
     throw new Error("AI returned an invalid structure for spec exports.");
+  }
+
+  async elaborateUserStory(story: string): Promise<string> {
+    const userContent: Content = { role: 'user', parts: [{ text: story }] };
+    const response: GenerateContentResponse = await this._handleApiCall(async () =>
+      this.ai.models.generateContent({
+        model: GEMINI_MODEL_NAME,
+        contents: [userContent],
+        config: { systemInstruction: MIETTE_ELABORATE_STORY_SYSTEM_INSTRUCTION }
+      }), "elaborate user story with Miette");
+    return sanitizeMarkdownContent(response.text);
+  }
+
+  async explainWithMetaphor(concept: string): Promise<string> {
+    const userContent: Content = { role: 'user', parts: [{ text: concept }] };
+    const response: GenerateContentResponse = await this._handleApiCall(async () =>
+      this.ai.models.generateContent({
+        model: GEMINI_MODEL_NAME,
+        contents: [userContent],
+        config: { systemInstruction: MIETTE_EXPLAIN_METAPHOR_SYSTEM_INSTRUCTION }
+      }), "explain with metaphor with Miette");
+    return sanitizeMarkdownContent(response.text);
+  }
+
+  async generateEmpathyPrompts(featureDescription: string): Promise<string> {
+    const userContent: Content = { role: 'user', parts: [{ text: featureDescription }] };
+    const response: GenerateContentResponse = await this._handleApiCall(async () =>
+      this.ai.models.generateContent({
+        model: GEMINI_MODEL_NAME,
+        contents: [userContent],
+        config: { systemInstruction: MIETTE_EMPATHY_PROMPTS_SYSTEM_INSTRUCTION }
+      }), "generate empathy prompts with Miette");
+    return sanitizeMarkdownContent(response.text);
   }
 }
 
