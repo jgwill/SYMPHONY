@@ -113,6 +113,14 @@ export interface AgentDefinition {
   mainViewComponent: React.ComponentType<any> | string; // Now mandatory, WorkspaceAgent will have one
 }
 
+export interface NyroFeedback {
+  id: string;
+  type: 'validation' | 'refinement_suggestion';
+  inputTextSample: string;
+  outputText: string;
+  timestamp: number;
+}
+
 export interface LedgerEntry {
   id: string;
   timestamp: number;
@@ -124,7 +132,10 @@ export interface LedgerEntry {
 
 export interface AgentSpecificState {
   lastResponse?: any;
-  internalState?: Record<string, any> & { ledgerEntries?: LedgerEntry[] }; // Made more flexible for Seraphine
+  internalState?: Record<string, any> & { 
+    ledgerEntries?: LedgerEntry[];
+    nyroFeedbackItems?: NyroFeedback[]; // Added for Nyro
+  };
 }
 
 export interface SharedAgentContext {

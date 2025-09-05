@@ -1,6 +1,6 @@
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { AppContext } from '../../App';
-import { AppContextType, PlanFile } from '../../types';
+import { AppContextType, PlanFile, NyroFeedback } from '../../types';
 import { CodeBracketIcon, SparklesIcon, DocumentIcon, ArrowPathIcon } from '../icons'; 
 import Card from '../Card'; 
 import { cn } from '../../lib/utils';
@@ -8,52 +8,16 @@ import { geminiService } from '../../services/geminiService';
 import SampleDropdown from '../SampleDropdown';
 import { NYRO_SAMPLES } from '../../constants/samples';
 
-interface NyroFeedback {
-  id: string;
-  type: 'validation' | 'refinement_suggestion';
-  inputTextSample: string;
-  outputText: string;
-  timestamp: number;
-}
-
-const NYRO_FEEDBACK_STORAGE_KEY = 'symphony_nyro_feedback_v1';
-
 const NyroAgentView: React.FC = () => {
   const context = useContext(AppContext) as AppContextType | null;
   
   const [inputText, setInputText] = useState<string>('');
-  const [feedbackItems, setFeedbackItems] = useState<NyroFeedback[]>([]);
   const [isValidating, setIsValidating] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
 
+  const agentId = 'nyro.syntax.v1';
+  const feedbackItems = context?.agentMemory.agents[agentId]?.internalState?.nyroFeedbackItems || [];
   const activeFile = context?.agentMemory.sharedContext.activeFileForImplementation;
-
-  // Load feedback from localStorage on initial component mount
-  useEffect(() => {
-    try {
-      const storedFeedback = localStorage.getItem(NYRO_FEEDBACK_STORAGE_KEY);
-      if (storedFeedback) {
-        const parsedFeedback = JSON.parse(storedFeedback);
-        if (Array.isArray(parsedFeedback)) {
-          setFeedbackItems(parsedFeedback);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to load Nyro feedback from localStorage:", error);
-      // Clear corrupted data
-      localStorage.removeItem(NYRO_FEEDBACK_STORAGE_KEY);
-    }
-  }, []);
-
-  // Save feedback to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem(NYRO_FEEDBACK_STORAGE_KEY, JSON.stringify(feedbackItems));
-    } catch (error) {
-      console.error("Failed to save Nyro feedback to localStorage:", error);
-    }
-  }, [feedbackItems]);
-
 
   useEffect(() => {
     if (activeFile) { 
@@ -74,37 +38,52 @@ const NyroAgentView: React.FC = () => {
 
     if (processingType === 'validation') setIsValidating(true);
     else setIsSuggesting(true);
-    context.setIsLoading(true); // Keep global loading
+    context.setIsLoading(true);
     context.setAppError(null);
     
     let generatedOutputText = '';
+    let newFeedback: NyroFeedback;
+
     try {
       if (processingType === 'validation') {
         generatedOutputText = await geminiService.validateSyntaxAndLogic(inputText);
       } else { 
         generatedOutputText = await geminiService.suggestRefinements(inputText);
       }
-
-      const newFeedback: NyroFeedback = {
+      newFeedback = {
         id: `nyro_${processingType}_${Date.now()}`,
         type: processingType,
         inputTextSample: inputText.substring(0, 100) + (inputText.length > 100 ? '...' : ''),
         outputText: generatedOutputText,
         timestamp: Date.now(),
       };
-      setFeedbackItems(prev => [newFeedback, ...prev]);
-
     } catch (error) {
       context.setAppError((error as Error).message);
-      const errorFeedback: NyroFeedback = {
+      newFeedback = {
         id: `nyro_error_${Date.now()}`,
         type: processingType,
         inputTextSample: inputText.substring(0, 100) + (inputText.length > 100 ? '...' : ''),
         outputText: `Error during ${processingType}: ${(error as Error).message}`,
         timestamp: Date.now(),
       };
-      setFeedbackItems(prev => [errorFeedback, ...prev]);
     } finally {
+      context.setAgentMemory(prev => {
+        const currentAgentState = prev.agents[agentId] || {};
+        const currentInternalState = currentAgentState.internalState || {};
+        const currentFeedback = currentInternalState.nyroFeedbackItems || [];
+        const updatedAgentState = {
+            ...currentAgentState,
+            internalState: {
+                ...currentInternalState,
+                nyroFeedbackItems: [newFeedback, ...currentFeedback]
+            }
+        };
+        return {
+            ...prev,
+            agents: { ...prev.agents, [agentId]: updatedAgentState }
+        };
+      });
+
       context.setIsLoading(false);
       if (processingType === 'validation') setIsValidating(false);
       else setIsSuggesting(false);
@@ -113,7 +92,7 @@ const NyroAgentView: React.FC = () => {
 
 
   if (!context) return <div className="p-4 text-slate-500">Nyro Agent context not available.</div>;
-  const isLoading = context.isLoading; // Global loading state
+  const isLoading = context.isLoading;
 
   return (
     <div className="p-4 sm:p-6 h-full flex flex-col bg-slate-850 text-slate-200 overflow-y-auto custom-scrollbar">
